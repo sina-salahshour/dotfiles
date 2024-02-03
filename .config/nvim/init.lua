@@ -1,0 +1,8 @@
+require "config.lazy"
+require "config.mason"
+require "config.cmp"
+require "config.keymaps"
+require "config.common"
+require "config.vgit"
+require "config.comment"
+require "config.colorizer"
