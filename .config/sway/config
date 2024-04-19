@@ -27,31 +27,33 @@ set $menu exec foot -a launcher -e sway-launcher-desktop
 
 ### Appearance
 # window corner radius in px
-corner_radius 10
-
-# Window background blur
-blur off
-blur_xray off
-blur_passes 2
-blur_radius 5
-
-shadows off
-shadows_on_csd off
-shadow_blur_radius 20
-shadow_color #0000007F
-
-# inactive window fade amount. 0.0 = no dimming, 1.0 = fully dimmed
-default_dim_inactive 0.0
-dim_inactive_colors.unfocused #000000FF
-dim_inactive_colors.urgent #900000FF
-
-# Move minimized windows into Scratchpad (enable|disable)
-scratchpad_minimize disable
-
-### Output configuration
+# corner_radius 10
 #
+# # Window background blur
+# blur off
+# blur_xray off
+# blur_passes 2
+# blur_radius 5
+#
+# shadows off
+# shadows_on_csd off
+# shadow_blur_radius 20
+# shadow_color #0000007F
+#
+# # inactive window fade amount. 0.0 = no dimming, 1.0 = fully dimmed
+# default_dim_inactive 0.0
+# dim_inactive_colors.unfocused #000000FF
+# dim_inactive_colors.urgent #900000FF
+#
+# # Move minimized windows into Scratchpad (enable|disable)
+# scratchpad_minimize disable
+# Pulse Audio controls
+# bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume alsa_output.pci-0000:00:1b.0.analog-stereo +5% #increase sound volume
+# bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume alsa_output.pci-0000:00:1b.0.analog-stereo -5% #decrease sound volume
+# bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute alsa_output.pci-0000:00:1b.0.analog-stereo toggle # mute sound
+### Output configuration
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg /home/drhe/.config/background.jpg fill
+output * bg /home/drhe/.config/background fill
 #
 # Example configuration:
 #
@@ -63,11 +65,12 @@ output * bg /home/drhe/.config/background.jpg fill
 #
 # Example configuration:
 #
-# exec swayidle -w \
-#          timeout 300 'swaylock -f -c 000000' \
-#          timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
-#          before-sleep 'swaylock -f -c 000000'
-#
+exec swayidle -w \
+         timeout 300 'swaylock -f -c 000000' \
+         timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
+         before-sleep 'swaylock -f -c 000000'
+
+
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
@@ -228,6 +231,18 @@ bindsym $mod+r mode "resize"
 
 bindsym $mod+i exec --no-startup-id brightnessctl s 5%+
 bindsym $mod+o exec --no-startup-id brightnessctl s 5%-
+bindsym --to-code $mod+Ctrl+p exec pavucontrol
+bindsym --to-code XF86AudioPrev exec --no-startup-id pactl set-sink-volume 0 -2% #decrease sound volume
+bindsym --to-code XF86AudioNext exec --no-startup-id pactl set-sink-mute 0 toggle notify-send "Muted" # mute sound
+bindsym --to-code XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +2% #increase sound volume
+bindsym --to-code XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -2% #decrease sound volume
+bindsym --to-code XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle notify-send "Muted" # mute sound
+bindsym --to-code XF86MonBrightnessUp exec --no-startup-id brightnessctl s 5%+
+bindsym --to-code XF86MonBrightnessDown exec --no-startup-id brightnessctl s 5%-
+
+# bindsym $mod+m exec --no-startup-id pactl set-sink-volume 0 +2% #increase sound volume
+bindsym $mod+m exec --no-startup-id pactl set-sink-volume 0 -2% #decrease sound volume
+# bindsym $mod+m exec --no-startup-id pactl set-sink-mute 0 toggle notify-send "Muted" # mute sound
 
 #
 # Status Bar:

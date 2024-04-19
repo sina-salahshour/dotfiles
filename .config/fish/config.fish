@@ -24,11 +24,11 @@ if status is-interactive
     function cw
         cd $(dirname $(whereis $argv[1] | sed 's/\S*\s*\(\S*\).*/\1/'))
     end
-    function windows_reboot
-        set WINDOWS_TITLE $(dudo "grep -i \"^menuentry 'Windows\" /boot/grub/grub.cfg |head -n 1 | cut -d\"'\" -f2")
-        dudo "grub-reboot \"$WINDOWS_TITLE\""
-        reboot
-    end
+    # function windows_reboot
+    #     set WINDOWS_TITLE $(dudo "grep -i \"^menuentry 'Windows\" /boot/grub/grub.cfg |head -n 1 | cut -d\"'\" -f2")
+    #     dudo "grub-reboot \"$WINDOWS_TITLE\""
+    #     reboot
+    # end
 end
 
 
