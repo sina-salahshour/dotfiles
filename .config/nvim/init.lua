@@ -75,6 +75,11 @@ vim.opt.scrolloff = 10
 vim.opt.hlsearch = true
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
+vim.keymap.set("n", "<A-j>", ":m .+1<CR>==") -- move line up(n)
+vim.keymap.set("n", "<A-k>", ":m .-2<CR>==") -- move line down(n)
+vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv") -- move line up(v)
+vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv") -- move line down(v)
+
 -- Diagnostic keymaps
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous [D]iagnostic message" })
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagnostic message" })
@@ -139,6 +144,9 @@ vim.opt.rtp:prepend(lazypath)
 --
 -- NOTE: Here is where you install your plugins.
 require("lazy").setup({
+
+	"xiyaowong/transparent.nvim",
+
 	-- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
 	"tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
 
@@ -152,7 +160,7 @@ require("lazy").setup({
 	--    require('Comment').setup({})
 
 	-- "gc" to comment visual regions/lines
-	{ "numToStr/Comment.nvim", opts = {} },
+	{ "numToStr/Comment.nvim", opts = {}, lazy = false },
 
 	-- Here is a more advanced example where we pass configuration
 	-- options to `gitsigns.nvim`. This is equivalent to the following Lua:
@@ -669,7 +677,8 @@ require("lazy").setup({
 			-- Load the colorscheme here.
 			-- Like many other themes, this one has different styles, and you could load
 			-- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-			vim.cmd.colorscheme("tokyonight-night")
+			-- vim.cmd.colorscheme("tokyonight-night")
+			vim.cmd.colorscheme("habamax")
 
 			-- You can configure highlights by doing something like:
 			vim.cmd.hi("Comment gui=none")

@@ -20,7 +20,10 @@ set $term kitty
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
 # set $menu dmenu_path | dmenu | xargs swaymsg exec --
-set $menu kitty sway-launcher-desktop
+# set $menu kitty sway-launcher-desktop
+for_window [app_id="^launcher$"] floating enable, sticky enable, resize set 30 ppt 60 ppt, border pixel 10
+set $menu exec foot -a launcher -e sway-launcher-desktop
+# bindsym $mod+d exec $menu
 
 ### Appearance
 # window corner radius in px
