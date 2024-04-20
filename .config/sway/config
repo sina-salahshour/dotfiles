@@ -27,7 +27,7 @@ set $menu exec foot -a launcher -e sway-launcher-desktop
 
 default_border pixel 1
 smart_borders 1
-
+for_window [app_id="flameshot"] border pixel 0, floating enable, fullscreen disable, move absolute position 0 0
 ### Appearance
 # window corner radius in px
 # corner_radius 10
@@ -88,6 +88,10 @@ exec swayidle -w \
       natural_scroll disabled
       middle_emulation enabled
   }
+  input type:keyboard {
+    xkb_layout us,ir
+    xkb_options grp:win_space_toggle
+}
 # input touchpad tap enabled
 #
 # You can get the names of your inputs by running: swaymsg -t get_inputs
@@ -246,6 +250,8 @@ bindsym --to-code XF86MonBrightnessDown exec --no-startup-id brightnessctl s 5%-
 # bindsym $mod+m exec --no-startup-id pactl set-sink-volume 0 +2% #increase sound volume
 bindsym $mod+m exec --no-startup-id pactl set-sink-volume 0 -2% #decrease sound volume
 # bindsym $mod+m exec --no-startup-id pactl set-sink-mute 0 toggle notify-send "Muted" # mute sound
+
+bindsym --release Print exec sway-interactive-screenshot
 
 #
 # Status Bar:
