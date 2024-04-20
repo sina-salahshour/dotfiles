@@ -26,6 +26,7 @@ set $menu exec foot -a launcher -e sway-launcher-desktop
 # bindsym $mod+d exec $menu
 
 default_border pixel 1
+smart_borders 1
 
 ### Appearance
 # window corner radius in px
