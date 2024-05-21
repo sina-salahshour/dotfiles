@@ -21,10 +21,9 @@ set $term kitty
 # on the original workspace that the command was run on.
 # set $menu dmenu_path | dmenu | xargs swaymsg exec --
 # set $menu kitty sway-launcher-desktop
-for_window [app_id="^launcher$"] floating enable, sticky enable, resize set 30 ppt 60 ppt, border pixel 10
+for_window [app_id="^launcher$"] floating enable, sticky enable, resize set 30 ppt 60 ppt, border pixel 5
 set $menu exec foot -a launcher -e sway-launcher-desktop
 # bindsym $mod+d exec $menu
-
 default_border pixel 1
 smart_borders 1
 for_window [app_id="flameshot"] border pixel 0, floating enable, fullscreen disable, move absolute position 0 0
@@ -73,7 +72,7 @@ exec swayidle -w \
          timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
          before-sleep 'swaylock -f -c 000000'
 
-
+exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
@@ -151,16 +150,36 @@ exec swayidle -w \
 # Workspaces:
 #
     # Switch to workspace
-    bindsym $mod+1 workspace number 1
-    bindsym $mod+2 workspace number 2
-    bindsym $mod+3 workspace number 3
-    bindsym $mod+4 workspace number 4
-    bindsym $mod+5 workspace number 5
-    bindsym $mod+6 workspace number 6
-    bindsym $mod+7 workspace number 7
-    bindsym $mod+8 workspace number 8
-    bindsym $mod+9 workspace number 9
-    bindsym $mod+0 workspace number 10
+    # bindsym $mod+1 workspace number 1
+    # bindsym $mod+2 workspace number 2
+    # bindsym $mod+3 workspace number 3
+    # bindsym $mod+4 workspace number 4
+    # bindsym $mod+5 workspace number 5
+    # bindsym $mod+6 workspace number 6
+    # bindsym $mod+7 workspace number 7
+    # bindsym $mod+8 workspace number 8
+    # bindsym $mod+9 workspace number 9
+    # bindsym $mod+0 workspace number 10
+set $workspaceh  "/home/drhe/.local/bin/workspaceh"
+    bindsym $mod+p exec --no-startup-id $workspaceh toggle
+    bindsym $mod+bracketleft exec --no-startup-id $workspaceh prev
+    bindsym $mod+bracketright exec --no-startup-id $workspaceh next
+    bindsym $mod+1 exec --no-startup-id $workspaceh set 1
+    bindsym $mod+2 exec --no-startup-id $workspaceh set 2
+    bindsym $mod+3 exec --no-startup-id $workspaceh set 3
+    bindsym $mod+4 exec --no-startup-id $workspaceh set 4
+    bindsym $mod+5 exec --no-startup-id $workspaceh set 5
+    bindsym $mod+6 exec --no-startup-id $workspaceh set 6
+    bindsym $mod+7 exec --no-startup-id $workspaceh set 7
+    bindsym $mod+8 exec --no-startup-id $workspaceh set 8
+    bindsym $mod+9 exec --no-startup-id $workspaceh set 9
+    bindsym $mod+0 exec --no-startup-id $workspaceh set 10
+
+
+    bindsym $mod+Shift+p exec --no-startup-id $workspaceh toggle nil move
+    bindsym $mod+Shift+bracketleft exec --no-startup-id $workspaceh prev nil move
+    bindsym $mod+Shift+bracketright exec --no-startup-id $workspaceh next nil move
+
     # Move focused container to workspace
     bindsym $mod+Shift+1 move container to workspace number 1
     bindsym $mod+Shift+2 move container to workspace number 2
@@ -238,7 +257,7 @@ bindsym $mod+r mode "resize"
 
 bindsym $mod+i exec --no-startup-id brightnessctl s 5%+
 bindsym $mod+o exec --no-startup-id brightnessctl s 5%-
-bindsym --to-code $mod+Ctrl+p exec pavucontrol
+bindsym --to-code $mod+Ctrl+p exec pnoavucontrol
 bindsym --to-code XF86AudioPrev exec --no-startup-id pactl set-sink-volume 0 -2% #decrease sound volume
 bindsym --to-code XF86AudioNext exec --no-startup-id pactl set-sink-mute 0 toggle notify-send "Muted" # mute sound
 bindsym --to-code XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +2% #increase sound volume
@@ -252,6 +271,7 @@ bindsym $mod+m exec --no-startup-id pactl set-sink-volume 0 -2% #decrease sound 
 # bindsym $mod+m exec --no-startup-id pactl set-sink-mute 0 toggle notify-send "Muted" # mute sound
 
 bindsym --release Print exec sway-interactive-screenshot
+bindsym $mod+x exec --no-startup-id  swaylock -f -c 000000
 
 #
 # Status Bar:

@@ -1,11 +1,13 @@
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
+--
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- Set to true if you have a Nerd Font installed
 vim.g.have_nerd_font = true
+vim.opt.termguicolors = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -20,6 +22,7 @@ vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = "a"
+vim.opt.tabstop = 4
 
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
@@ -93,6 +96,8 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagn
 -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+vim.keymap.set("n", "<leader>w", ":w<enter>", { desc = "Save current buffer" })
+vim.keymap.set("n", "<leader>qq", ":q<enter>", { desc = "Quit nvim" })
 
 -- TIP: Disable arrow keys in normal mode
 -- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
@@ -144,8 +149,266 @@ vim.opt.rtp:prepend(lazypath)
 --
 -- NOTE: Here is where you install your plugins.
 require("lazy").setup({
-
+	"tpope/vim-fugitive",
+	{
+		"eandrju/cellular-automaton.nvim",
+		config = function()
+			vim.keymap.set("n", "<leader>fml", "<cmd>CellularAutomaton make_it_rain<CR>")
+		end,
+	},
+	{
+		"mbbill/undotree",
+		config = function()
+			vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
+		end,
+	},
 	"xiyaowong/transparent.nvim",
+	"nvim-tree/nvim-web-devicons",
+	{
+		"feline-nvim/feline.nvim",
+		config = function()
+			local line_ok, feline = pcall(require, "feline")
+			if not line_ok then
+				return
+			end
+
+			local one_monokai = {
+				fg = "#abb2bf",
+				bg = "#1e2024",
+				green = "#98c379",
+				yellow = "#e5c07b",
+				purple = "#c678dd",
+				orange = "#d19a66",
+				peanut = "#f6d5a4",
+				red = "#e06c75",
+				aqua = "#61afef",
+				darkblue = "#282c34",
+				dark_red = "#f75f5f",
+			}
+
+			local vi_mode_colors = {
+				NORMAL = "green",
+				OP = "green",
+				INSERT = "yellow",
+				VISUAL = "purple",
+				LINES = "orange",
+				BLOCK = "dark_red",
+				REPLACE = "red",
+				COMMAND = "aqua",
+			}
+
+			local c = {
+				vim_mode = {
+					provider = {
+						name = "vi_mode",
+						opts = {
+							show_mode_name = true,
+							-- padding = "center", -- Uncomment for extra padding.
+						},
+					},
+					hl = function()
+						return {
+							fg = require("feline.providers.vi_mode").get_mode_color(),
+							bg = "darkblue",
+							style = "bold",
+							name = "NeovimModeHLColor",
+						}
+					end,
+					left_sep = "block",
+					right_sep = "block",
+				},
+				gitBranch = {
+					provider = "git_branch",
+					hl = {
+						fg = "peanut",
+						bg = "darkblue",
+						style = "bold",
+					},
+					left_sep = "block",
+					right_sep = "block",
+				},
+				gitDiffAdded = {
+					provider = "git_diff_added",
+					hl = {
+						fg = "green",
+						bg = "darkblue",
+					},
+					left_sep = "block",
+					right_sep = "block",
+				},
+				gitDiffRemoved = {
+					provider = "git_diff_removed",
+					hl = {
+						fg = "red",
+						bg = "darkblue",
+					},
+					left_sep = "block",
+					right_sep = "block",
+				},
+				gitDiffChanged = {
+					provider = "git_diff_changed",
+					hl = {
+						fg = "fg",
+						bg = "darkblue",
+					},
+					left_sep = "block",
+					right_sep = "right_filled",
+				},
+				separator = {
+					provider = "",
+				},
+				fileinfo = {
+					provider = {
+						name = "file_info",
+						opts = {
+							type = "relative-short",
+						},
+					},
+					hl = {
+						style = "bold",
+					},
+					left_sep = " ",
+					right_sep = " ",
+				},
+				diagnostic_errors = {
+					provider = "diagnostic_errors",
+					hl = {
+						fg = "red",
+					},
+				},
+				diagnostic_warnings = {
+					provider = "diagnostic_warnings",
+					hl = {
+						fg = "yellow",
+					},
+				},
+				diagnostic_hints = {
+					provider = "diagnostic_hints",
+					hl = {
+						fg = "aqua",
+					},
+				},
+				diagnostic_info = {
+					provider = "diagnostic_info",
+				},
+				lsp_client_names = {
+					provider = "lsp_client_names",
+					hl = {
+						fg = "purple",
+						bg = "darkblue",
+						style = "bold",
+					},
+					left_sep = "left_filled",
+					right_sep = "block",
+				},
+				file_type = {
+					provider = {
+						name = "file_type",
+						opts = {
+							filetype_icon = true,
+							case = "titlecase",
+						},
+					},
+					hl = {
+						fg = "red",
+						bg = "darkblue",
+						style = "bold",
+					},
+					left_sep = "block",
+					right_sep = "block",
+				},
+				file_encoding = {
+					provider = "file_encoding",
+					hl = {
+						fg = "orange",
+						bg = "darkblue",
+						style = "italic",
+					},
+					left_sep = "block",
+					right_sep = "block",
+				},
+				position = {
+					provider = "position",
+					hl = {
+						fg = "green",
+						bg = "darkblue",
+						style = "bold",
+					},
+					left_sep = "block",
+					right_sep = "block",
+				},
+				line_percentage = {
+					provider = "line_percentage",
+					hl = {
+						fg = "aqua",
+						bg = "darkblue",
+						style = "bold",
+					},
+					left_sep = "block",
+					right_sep = "block",
+				},
+				scroll_bar = {
+					provider = "scroll_bar",
+					hl = {
+						fg = "yellow",
+						style = "bold",
+					},
+				},
+			}
+
+			local left = {
+				c.vim_mode,
+				c.gitBranch,
+				c.gitDiffAdded,
+				c.gitDiffRemoved,
+				c.gitDiffChanged,
+				c.separator,
+			}
+
+			local middle = {
+				c.fileinfo,
+				c.diagnostic_errors,
+				c.diagnostic_warnings,
+				c.diagnostic_info,
+				c.diagnostic_hints,
+			}
+
+			local right = {
+				c.lsp_client_names,
+				c.file_type,
+				c.file_encoding,
+				c.position,
+				c.line_percentage,
+				c.scroll_bar,
+			}
+
+			local components = {
+				active = {
+					left,
+					middle,
+					right,
+				},
+				inactive = {
+					left,
+					middle,
+					right,
+				},
+			}
+
+			feline.setup({
+				components = components,
+				theme = one_monokai,
+				vi_mode_colors = vi_mode_colors,
+			})
+			-- require("feline").setup()
+		end,
+	},
+	{
+		"NvChad/nvim-colorizer.lua",
+		config = function()
+			require("colorizer").setup({})
+		end,
+	},
 
 	-- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
 	"tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
@@ -195,6 +458,12 @@ require("lazy").setup({
 	-- after the plugin has been loaded:
 	--  config = function() ... end
 
+	{
+		"Djancyp/better-comments.nvim",
+		config = function()
+			require("better-comment").Setup()
+		end,
+	},
 	{ -- Useful plugin to show you pending keybinds.
 		"folke/which-key.nvim",
 		event = "VimEnter", -- Sets the loading event to 'VimEnter'
@@ -207,7 +476,7 @@ require("lazy").setup({
 				["<leader>d"] = { name = "[D]ocument", _ = "which_key_ignore" },
 				["<leader>r"] = { name = "[R]ename", _ = "which_key_ignore" },
 				["<leader>s"] = { name = "[S]earch", _ = "which_key_ignore" },
-				["<leader>w"] = { name = "[W]orkspace", _ = "which_key_ignore" },
+				["<leader>q"] = { name = "[W]orkspace", _ = "which_key_ignore" },
 			})
 		end,
 	},
@@ -406,7 +675,7 @@ require("lazy").setup({
 					-- Fuzzy find all the symbols in your current workspace.
 					--  Similar to document symbols, except searches over your entire project.
 					map(
-						"<leader>ws",
+						"<leader>qs",
 						require("telescope.builtin").lsp_dynamic_workspace_symbols,
 						"[W]orkspace [S]ymbols"
 					)
@@ -552,7 +821,7 @@ require("lazy").setup({
 			formatters_by_ft = {
 				lua = { "stylua" },
 				-- Conform can also run multiple formatters sequentially
-				-- python = { "isort", "black" },
+				python = { "isort", "black" },
 				--
 				-- You can use a sub-list to tell conform to run *until* a formatter
 				-- is found.
@@ -711,20 +980,24 @@ require("lazy").setup({
 			-- - sr)'  - [S]urround [R]eplace [)] [']
 			require("mini.surround").setup()
 
-			-- Simple and easy statusline.
-			--  You could remove this setup call if you don't like it,
-			--  and try some other statusline plugin
-			local statusline = require("mini.statusline")
-			-- set use_icons to true if you have a Nerd Font
-			statusline.setup({ use_icons = vim.g.have_nerd_font })
+			require("mini.files").setup()
 
-			-- You can configure sections in the statusline by overriding their
-			-- default behavior. For example, here we set the section for
-			-- cursor location to LINE:COLUMN
-			---@diagnostic disable-next-line: duplicate-set-field
-			statusline.section_location = function()
-				return "%2l:%-2v"
-			end
+			vim.keymap.set("n", "<leader>e", MiniFiles.open, { desc = "Open file explorer" })
+			--
+			-- -- Simple and easy statusline.
+			-- --  You could remove this setup call if you don't like it,
+			-- --  and try some other statusline plugin
+			-- local statusline = require("mini.statusline")
+			-- -- set use_icons to true if you have a Nerd Font
+			-- statusline.setup({ use_icons = vim.g.have_nerd_font,  })
+			--
+			-- -- You can configure sections in the statusline by overriding their
+			-- -- default behavior. For example, here we set the section for
+			-- -- cursor location to LINE:COLUMN
+			-- ---@diagnostic disable-next-line: duplicate-set-field
+			-- statusline.section_location = function()
+			-- 	return "%2l:%-2v"
+			-- end
 
 			-- ... and there is more!
 			--  Check out: https://github.com/echasnovski/mini.nvim
@@ -804,3 +1077,4 @@ require("lazy").setup({
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+--
